@@ -1,15 +1,18 @@
 #!/bin/bash
 
+#### USE 
+# The use of this script is for bypass the access control to the network, where the network is monitored in its pre-admission phase.
 # Execute  with root 
-# Not requrired installmacchanger
+# Not required installmac changer
+# THIS SCRIPT RECONNECT TO NETWORK !
 
-echo 'Listing Interfaces'
-ls /sys/class/net/ | grep ^
-echo 'Select and add your interface here! INT'
-read INT
-INTERFACE='"$INT"';
-NETWORK_NAME='';
-INTERVAL=5;
+### REQUIREMENTS  
+# Required change INTERFACE AND NETWORK_NAME  values
+# On NetWorkManager select automatic connect 
+
+INTERFACE='...'; #put interface here
+NETWORK_NAME='...'; #put networkname here
+INTERVAL=30;
 
 while true; do 
     hexchars="0123456789ABCDEF"
@@ -24,7 +27,21 @@ while true; do
     ifconfig $INTERFACE down
     ifconfig $INTERFACE hw ether $MAC
     ifconfig $INTERFACE up
-
+   
+    echo "Changing hostname random :)..."
+    
+    FILE=/usr/share/dict/american-english
+    WORD=$(sort -R $FILE | head -1)
+    OLDHOST=$(hostname)
+    hostname $WORD
+    if [ $? == 0 ]; then
+        echo "%sPrevius Hostname: $OLDHOST \n"
+        echo "%sRandom Hostname: $WORD \n"
+    else
+            echo "%sScript encounter an error, sorry…\n"
+    exit 1
+    fi 
+	
     echo '- Init  service  of NetworkManager ...';
     systemctl start network-manager
 
