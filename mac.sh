@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#Execute  with root 
-# require install mac
+# Execute  with root 
+# Not requrired installmacchanger
 
 echo 'Listing Interfaces'
 ls /sys/class/net/ | grep ^
